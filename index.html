@@ -1,0 +1,1633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Exam P Calc</title>
+<style>
+  :root {
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #475569;
+    --border: #cbd5e1;
+    --accent: #0f766e;
+    --accent-soft: rgba(15, 118, 110, 0.12);
+    --accent-2: #1d4ed8;
+    --input-bg: #f8fafc;
+    --danger: #b91c1c;
+    --safe-top: env(safe-area-inset-top, 20px);
+    --safe-bottom: env(safe-area-inset-bottom, 20px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0b1120;
+      --card: #131c31;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --border: #27354f;
+      --accent: #2dd4bf;
+      --accent-soft: rgba(45, 212, 191, 0.14);
+      --accent-2: #60a5fa;
+      --input-bg: #0f172a;
+      --danger: #f87171;
+    }
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding-top: var(--safe-top);
+    padding-bottom: calc(var(--safe-bottom) + 74px);
+    line-height: 1.4;
+  }
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  header span.badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  main {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 12px;
+  }
+  .section { display: none; }
+  .section.active { display: block; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+  .card h2 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+  }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  input, select {
+    width: 100%;
+    font-size: 16px;
+    padding: 9px 10px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-family: inherit;
+  }
+  input.mono, .mono {
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+  }
+  .seg-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .seg-btn {
+    flex: 1;
+    min-width: 72px;
+    padding: 8px 6px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--input-bg);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+  }
+  .seg-btn.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+  }
+  @media (prefers-color-scheme: dark) {
+    .seg-btn.active { color: #042f2e; }
+  }
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .stat-box {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 10px;
+  }
+  .stat-box .k {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .stat-box .v {
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 2px;
+    font-family: "SF Mono", Menlo, Monaco, monospace;
+    word-break: break-all;
+  }
+  .stat-box.highlight {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  canvas {
+    width: 100%;
+    height: 185px;
+    display: block;
+    border-radius: 10px;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    margin-top: 10px;
+  }
+  table.matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  table.matrix th, table.matrix td {
+    border: 1px solid var(--border);
+    padding: 6px;
+    text-align: center;
+  }
+  table.matrix input {
+    padding: 6px;
+    font-size: 15px;
+    text-align: center;
+  }
+  .btn-action {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+  @media (prefers-color-scheme: dark) {
+    .btn-action { color: #042f2e; }
+  }
+  .note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .warn {
+    color: var(--danger);
+    font-weight: 600;
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  nav.tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    padding: 6px 4px calc(var(--safe-bottom) + 4px) 4px;
+    display: flex;
+    overflow-x: auto;
+    gap: 2px;
+  }
+  nav.tabbar button {
+    flex: 1 0 auto;
+    min-width: 56px;
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 4px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+  }
+  nav.tabbar button.active {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+  nav.tabbar button span.ico {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .formula-item {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+  }
+  .formula-item:last-child { border-bottom: none; }
+  .formula-title { font-weight: 700; font-size: 13px; }
+  .formula-body { font-family: "SF Mono", Menlo, monospace; font-size: 12px; color: var(--accent); margin-top: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Exam P Actuarial Calc</h1>
+  <span class="badge">SOA / CAS 1</span>
+</header>
+
+<main>
+  <!-- 1. DISTRIBUTIONS -->
+  <section id="sec-dist" class="section active">
+    <div class="card">
+      <h2>1. Probability Distributions & MGF</h2>
+      <div class="grid-2">
+        <div>
+          <label>Family</label>
+          <select id="dist-family" onchange="onFamilyChange()">
+            <option value="cont">Continuous</option>
+            <option value="disc">Discrete</option>
+          </select>
+        </div>
+        <div>
+          <label>Distribution</label>
+          <select id="dist-model" onchange="onModelChange()"></select>
+        </div>
+      </div>
+      <div id="dist-params" class="grid-2" style="margin-top:10px;"></div>
+      <div style="margin-top:10px;">
+        <label>Probability Query Mode</label>
+        <div class="seg-row" id="dist-modes">
+          <button class="seg-btn active" data-mode="cdf" onclick="setDistMode('cdf')">P(X &le; x)</button>
+          <button class="seg-btn" data-mode="surv" onclick="setDistMode('surv')">P(X &ge; x)</button>
+          <button class="seg-btn" data-mode="int" onclick="setDistMode('int')">P(a &le; X &le; b)</button>
+          <button class="seg-btn" data-mode="quant" onclick="setDistMode('quant')">F⁻¹(p)</button>
+        </div>
+      </div>
+      <div id="dist-query-inputs" class="grid-2"></div>
+      <div style="margin-top:10px;">
+        <label>MGF Argument t for M_X(t) = E[e^(tX)]</label>
+        <input type="number" step="0.1" id="dist-mgf-t" value="0.5" oninput="calcDist()">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Computed Results</h2>
+      <div class="stat-grid" id="dist-results"></div>
+      <canvas id="dist-canvas" width="640" height="320"></canvas>
+      <div class="note" id="dist-formula-note"></div>
+    </div>
+  </section>
+
+  <!-- 2. BIVARIATE -->
+  <section id="sec-bivar" class="section">
+    <div class="card">
+      <h2>2. Bivariate Joint PMF Table</h2>
+      <div class="grid-2">
+        <div>
+          <label>Grid Dimensions</label>
+          <select id="biv-size" onchange="initBivGrid()">
+            <option value="2" selected>2 x 2 Table</option>
+            <option value="3">3 x 3 Table</option>
+          </select>
+        </div>
+        <div>
+          <label>Conditional Slice</label>
+          <select id="biv-cond" onchange="calcBivar()"></select>
+        </div>
+      </div>
+      <div id="biv-table-wrap"></div>
+      <button class="btn-action" onclick="normalizeBiv()">Normalize Probabilities to 1.00</button>
+      <div id="biv-warn" class="warn"></div>
+    </div>
+
+    <div class="card">
+      <h2>Linear Combination W = aX + bY + c</h2>
+      <div class="grid-3">
+        <div><label>a</label><input type="number" step="0.5" id="biv-a" value="2" oninput="calcBivar()"></div>
+        <div><label>b</label><input type="number" step="0.5" id="biv-b" value="-3" oninput="calcBivar()"></div>
+        <div><label>c</label><input type="number" step="0.5" id="biv-c" value="5" oninput="calcBivar()"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Dependence & Conditional Moments</h2>
+      <div class="stat-grid" id="biv-results"></div>
+    </div>
+  </section>
+
+  <!-- 3. INSURANCE MODIFICATIONS -->
+  <section id="sec-ins" class="section">
+    <div class="card">
+      <h2>3. Coverage & Loss Modifications</h2>
+      <div class="grid-2">
+        <div>
+          <label>Ground-Up Severity X</label>
+          <select id="ins-sev" onchange="onInsSevChange()">
+            <option value="exp" selected>Exponential (Mean &theta;)</option>
+            <option value="pareto">Pareto (&alpha;, &theta;)</option>
+            <option value="unif">Uniform (0, b)</option>
+            <option value="lnorm">Lognormal (&mu;, &sigma;)</option>
+          </select>
+        </div>
+        <div>
+          <label>Deductible Type</label>
+          <select id="ins-ded-type" onchange="calcIns()">
+            <option value="ord" selected>Ordinary Deductible</option>
+            <option value="fran">Franchise Deductible</option>
+          </select>
+        </div>
+      </div>
+      <div id="ins-sev-params" class="grid-2" style="margin-top:10px;"></div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>Deductible (d)</label><input type="number" step="10" id="ins-d" value="200" oninput="calcIns()"></div>
+        <div><label>Policy Limit (u, covered loss)</label><input type="number" step="50" id="ins-u" value="2500" oninput="calcIns()"></div>
+      </div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>Coinsurance (&alpha; in 0..1]</label><input type="number" step="0.05" id="ins-alpha" value="0.8" oninput="calcIns()"></div>
+        <div><label>Inflation Rate (r)</label><input type="number" step="0.01" id="ins-r" value="0.05" oninput="calcIns()"></div>
+      </div>
+      <div style="margin-top:8px;">
+        <label><input type="checkbox" id="ins-has-u" checked onchange="calcIns()" style="width:auto; margin-right:6px;">Apply Policy Limit u (uncheck for u = &infin;)</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Insurer Payment Moments & LER</h2>
+      <div class="stat-grid" id="ins-results"></div>
+      <canvas id="ins-canvas" width="640" height="300"></canvas>
+    </div>
+  </section>
+
+  <!-- 4. ORDER STATISTICS -->
+  <section id="sec-order" class="section">
+    <div class="card">
+      <h2>4. Order Statistics X_(k)</h2>
+      <div class="grid-2">
+        <div>
+          <label>Parent Distribution</label>
+          <select id="ord-model" onchange="onOrdModelChange()">
+            <option value="exp" selected>Exponential (&lambda;)</option>
+            <option value="unif">Uniform (a, b)</option>
+            <option value="norm">Normal (&mu;, &sigma;)</option>
+            <option value="weib">Weibull (k, &lambda;)</option>
+          </select>
+        </div>
+        <div>
+          <label>Threshold x</label>
+          <input type="number" step="0.5" id="ord-x" value="5" oninput="calcOrder()">
+        </div>
+      </div>
+      <div id="ord-params" class="grid-2" style="margin-top:10px;"></div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>Sample Size (n)</label><input type="number" min="1" max="25" id="ord-n" value="5" oninput="calcOrder()"></div>
+        <div><label>Order Rank (k &le; n)</label><input type="number" min="1" max="25" id="ord-k" value="3" oninput="calcOrder()"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Order Moments & Reliability</h2>
+      <div class="stat-grid" id="ord-results"></div>
+      <canvas id="ord-canvas" width="640" height="300"></canvas>
+    </div>
+  </section>
+
+  <!-- 5. AGGREGATE LOSS -->
+  <section id="sec-agg" class="section">
+    <div class="card">
+      <h2>5. Compound Aggregate Risk S = &Sigma; X_i</h2>
+      <div class="grid-2">
+        <div>
+          <label>Frequency N</label>
+          <select id="agg-freq" onchange="onAggChange()">
+            <option value="pois" selected>Poisson (&lambda;)</option>
+            <option value="binom">Binomial (n, p)</option>
+            <option value="nbin">NegBinomial (r, p)</option>
+          </select>
+        </div>
+        <div>
+          <label>Severity X</label>
+          <select id="agg-sev" onchange="onAggChange()">
+            <option value="exp" selected>Exponential (Mean &theta;)</option>
+            <option value="gamma">Gamma (&alpha;, &beta; rate)</option>
+            <option value="lnorm">Lognormal (&mu;, &sigma;)</option>
+            <option value="unif">Uniform (a, b)</option>
+          </select>
+        </div>
+      </div>
+      <div id="agg-freq-params" class="grid-2" style="margin-top:10px;"></div>
+      <div id="agg-sev-params" class="grid-2" style="margin-top:10px;"></div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>Tail Threshold s for P(S &gt; s)</label><input type="number" step="100" id="agg-s" value="3500" oninput="calcAgg()"></div>
+        <div><label>VaR Confidence Level p</label><input type="number" step="0.01" id="agg-p" value="0.95" oninput="calcAgg()"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Collective Risk Moments & Tail Estimates</h2>
+      <div class="stat-grid" id="agg-results"></div>
+    </div>
+  </section>
+
+  <!-- 6. BAYES & TOTAL VARIANCE -->
+  <section id="sec-bayes" class="section">
+    <div class="card">
+      <h2>6. Bayes Theorem & Eve's Law</h2>
+      <div id="bayes-rows"></div>
+      <div class="grid-2" style="margin-top:8px;">
+        <button class="btn-action" onclick="addBayesRow()">+ Add State</button>
+        <button class="btn-action" onclick="normBayesPriors()">Normalize Priors</button>
+      </div>
+      <div id="bayes-warn" class="warn"></div>
+    </div>
+
+    <div class="card">
+      <h2>Posteriors & Total Variance Decomposition</h2>
+      <div id="bayes-table-wrap"></div>
+      <div class="stat-grid" id="bayes-results" style="margin-top:10px;"></div>
+    </div>
+  </section>
+
+  <!-- 7. REFERENCE & COMBINATORICS -->
+  <section id="sec-ref" class="section">
+    <div class="card">
+      <h2>7. Standard Normal Z-Table & Combinatorics</h2>
+      <div class="grid-2">
+        <div><label>z-score for &Phi;(z)</label><input type="number" step="0.01" id="ref-z" value="1.645" oninput="calcRef()"></div>
+        <div><label>Probability p for z_p</label><input type="number" step="0.005" id="ref-p" value="0.95" oninput="calcRef()"></div>
+      </div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>n (items)</label><input type="number" min="0" id="ref-n" value="10" oninput="calcRef()"></div>
+        <div><label>r (selected)</label><input type="number" min="0" id="ref-r" value="4" oninput="calcRef()"></div>
+      </div>
+      <div class="grid-2" style="margin-top:10px;">
+        <div><label>Birthday Group Size k</label><input type="number" min="1" id="ref-bk" value="23" oninput="calcRef()"></div>
+        <div><label>Total Outcomes N</label><input type="number" min="1" id="ref-bn" value="365" oninput="calcRef()"></div>
+      </div>
+      <div class="stat-grid" id="ref-results" style="margin-top:10px;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Exam P Formula Sheet</h2>
+      <input type="text" id="ref-search" placeholder="Filter formulas (e.g., MGF, Pareto, Eve, Order)..." oninput="renderFormulas()">
+      <div id="formula-list" style="margin-top:8px;"></div>
+    </div>
+  </section>
+</main>
+
+<nav class="tabbar">
+  <button class="active" data-tab="dist" onclick="switchTab('dist')"><span class="ico">&fnof;(x)</span>Dist</button>
+  <button data-tab="bivar" onclick="switchTab('bivar')"><span class="ico">X,Y</span>Joint</button>
+  <button data-tab="ins" onclick="switchTab('ins')"><span class="ico">$</span>Insure</button>
+  <button data-tab="order" onclick="switchTab('order')"><span class="ico">X(k)</span>Order</button>
+  <button data-tab="agg" onclick="switchTab('agg')"><span class="ico">&Sigma;</span>Agg</button>
+  <button data-tab="bayes" onclick="switchTab('bayes')"><span class="ico">P|A</span>Bayes</button>
+  <button data-tab="ref" onclick="switchTab('ref')"><span class="ico">&Phi;</span>Ref</button>
+</nav>
+
+<script>
+// ==================== SPECIAL MATH FUNCTIONS ====================
+function logGamma(z) {
+  const c = [
+    76.18009172947146, -86.50532032941677, 24.01409824083091,
+    -1.231739572450155, 0.001208650973866179, -0.000005395239384953
+  ];
+  let x = z, y = z, tmp = x + 5.5;
+  tmp -= (x + 0.5) * Math.log(tmp);
+  let ser = 1.000000000190015;
+  for (let j = 0; j < 6; j++) ser += c[j] / ++y;
+  return -tmp + Math.log(2.5066282746310005 * ser / x);
+}
+
+function logFact(n) {
+  if (n < 0) return -Infinity;
+  if (n <= 1) return 0;
+  return logGamma(n + 1);
+}
+
+function logComb(n, k) {
+  if (k < 0 || k > n) return -Infinity;
+  return logFact(n) - logFact(k) - logFact(n - k);
+}
+
+function erf(x) {
+  const s = x < 0 ? -1 : 1;
+  x = Math.abs(x);
+  const t = 1 / (1 + 0.3275911 * x);
+  const y = 1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-x * x);
+  return s * y;
+}
+
+function stdNormCDF(z) {
+  return 0.5 * (1 + erf(z / Math.SQRT2));
+}
+
+function stdNormPDF(z) {
+  return Math.exp(-0.5 * z * z) / Math.sqrt(2 * Math.PI);
+}
+
+function stdNormInv(p) {
+  if (p <= 0) return -Infinity;
+  if (p >= 1) return Infinity;
+  const a = [-39.69683028665376, 220.9460984245205, -275.9285104469687, 138.3577518672690, -30.66479806614716, 2.506628277459239];
+  const b = [-54.47609879822406, 161.5858368580409, -155.6989798598866, 66.80131188771972, -13.28068155288572];
+  const c = [-0.007784894002430293, -0.3223964580411365, -2.400758277161838, -2.549732539343734, 4.374664141464968, 2.938163982698783];
+  const d = [0.007784695709041462, 0.3224671290700398, 2.445134137142996, 3.754408661907416];
+  const pLow = 0.02425, pHigh = 1 - pLow;
+  let q, r;
+  if (p < pLow) {
+    q = Math.sqrt(-2 * Math.log(p));
+    return (((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1);
+  } else if (p <= pHigh) {
+    q = p - 0.5;
+    r = q * q;
+    return (((((a[0]*r + a[1])*r + a[2])*r + a[3])*r + a[4])*r + a[5]) * q / (((((b[0]*r + b[1])*r + b[2])*r + b[3])*r + b[4])*r + 1);
+  } else {
+    q = Math.sqrt(-2 * Math.log(1 - p));
+    return -(((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1);
+  }
+}
+
+function gammaincP(a, x) {
+  if (x <= 0) return 0;
+  if (a <= 0) return 1;
+  if (x < a + 1) {
+    let ap = a, del = 1 / a, sum = del;
+    for (let n = 1; n <= 200; n++) {
+      ap += 1;
+      del *= x / ap;
+      sum += del;
+      if (Math.abs(del) < Math.abs(sum) * 1e-13) break;
+    }
+    return sum * Math.exp(-x + a * Math.log(x) - logGamma(a));
+  } else {
+    let b = x + 1 - a, c = 1 / 1e-30, d = 1 / b, h = d;
+    for (let i = 1; i <= 200; i++) {
+      let an = -i * (i - a);
+      b += 2;
+      d = an * d + b;
+      if (Math.abs(d) < 1e-30) d = 1e-30;
+      c = b + an / c;
+      if (Math.abs(c) < 1e-30) c = 1e-30;
+      d = 1 / d;
+      let del = d * c;
+      h *= del;
+      if (Math.abs(del - 1) < 1e-13) break;
+    }
+    return 1 - Math.exp(-x + a * Math.log(x) - logGamma(a)) * h;
+  }
+}
+
+function betacf(a, b, x) {
+  const MAXIT = 200, EPS = 3e-12, FPMIN = 1e-30;
+  let qab = a + b, qap = a + 1, qam = a - 1;
+  let c = 1, d = 1 - qab * x / qap;
+  if (Math.abs(d) < FPMIN) d = FPMIN;
+  d = 1 / d;
+  let h = d;
+  for (let m = 1; m <= MAXIT; m++) {
+    let m2 = 2 * m;
+    let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1 + aa * d;
+    if (Math.abs(d) < FPMIN) d = FPMIN;
+    c = 1 + aa / c;
+    if (Math.abs(c) < FPMIN) c = FPMIN;
+    d = 1 / d;
+    h *= d * c;
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1 + aa * d;
+    if (Math.abs(d) < FPMIN) d = FPMIN;
+    c = 1 + aa / c;
+    if (Math.abs(c) < FPMIN) c = FPMIN;
+    d = 1 / d;
+    let del = d * c;
+    h *= del;
+    if (Math.abs(del - 1) < EPS) break;
+  }
+  return h;
+}
+
+function betainc(a, b, x) {
+  if (x <= 0) return 0;
+  if (x >= 1) return 1;
+  let bt = Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+  if (x < (a + 1) / (a + b + 2)) return bt * betacf(a, b, x) / a;
+  return 1 - bt * betacf(b, a, 1 - x) / b;
+}
+
+function simpson(fn, a, b, n = 800) {
+  if (b <= a) return 0;
+  const h = (b - a) / n;
+  let s = fn(a) + fn(b);
+  for (let i = 1; i < n; i++) {
+    s += (i % 2 === 0 ? 2 : 4) * fn(a + i * h);
+  }
+  return s * h / 3;
+}
+
+function fmt(v) {
+  if (v === null || v === undefined || Number.isNaN(v)) return "Undefined";
+  if (!Number.isFinite(v)) return v > 0 ? "+Infinity" : "-Infinity";
+  return Math.abs(v) < 1e-12 ? "0.000000" : v.toFixed(6);
+}
+
+// ==================== TAB SWITCHING ====================
+function switchTab(tab) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav.tabbar button').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + tab).classList.add('active');
+  document.querySelector(`nav.tabbar button[data-tab="${tab}"]`).classList.add('active');
+  if (tab === 'dist') calcDist();
+  if (tab === 'bivar') calcBivar();
+  if (tab === 'ins') calcIns();
+  if (tab === 'order') calcOrder();
+  if (tab === 'agg') calcAgg();
+  if (tab === 'bayes') calcBayes();
+  if (tab === 'ref') calcRef();
+}
+
+// ==================== 1. DISTRIBUTIONS ====================
+const DIST_SPECS = {
+  cont: {
+    norm: { name: "Normal (mu, sigma)", params: [{id:"mu", label:"Mean (mu)", val:0, step:0.5}, {id:"sd", label:"SD (sigma > 0)", val:1, step:0.1}], note: "M_X(t) = exp(mu*t + 0.5*sigma^2*t^2)" },
+    exp: { name: "Exponential (rate lambda)", params: [{id:"lam", label:"Rate (lambda > 0)", val:0.5, step:0.1}], note: "Mean = 1/lambda; M_X(t) = lambda/(lambda - t) for t < lambda" },
+    gamma: { name: "Gamma (shape alpha, rate beta)", params: [{id:"alpha", label:"Shape (alpha > 0)", val:2, step:0.5}, {id:"beta", label:"Rate (beta > 0)", val:1, step:0.2}], note: "Mean = alpha/beta; M_X(t) = (beta/(beta - t))^alpha for t < beta" },
+    unif: { name: "Uniform (a, b)", params: [{id:"a", label:"Lower (a)", val:0, step:0.5}, {id:"b", label:"Upper (b > a)", val:10, step:0.5}], note: "M_X(t) = (e^(tb) - e^(ta)) / (t(b - a))" },
+    beta: { name: "Beta (alpha, beta)", params: [{id:"alpha", label:"Alpha (> 0)", val:2, step:0.5}, {id:"beta", label:"Beta (> 0)", val:5, step:0.5}], note: "Support [0, 1]; Mean = alpha / (alpha + beta)" },
+    lnorm: { name: "Lognormal (mu, sigma)", params: [{id:"mu", label:"Log-Mean (mu)", val:0, step:0.2}, {id:"sd", label:"Log-SD (sigma > 0)", val:0.5, step:0.1}], note: "E[X] = exp(mu + sigma^2/2); MGF does not exist for t > 0" },
+    weib: { name: "Weibull (shape k, scale lambda)", params: [{id:"k", label:"Shape (k > 0)", val:2, step:0.2}, {id:"lam", label:"Scale (lambda > 0)", val:1, step:0.2}], note: "F(x) = 1 - exp(-(x/lambda)^k) for x >= 0" }
+  },
+  disc: {
+    binom: { name: "Binomial (n, p)", params: [{id:"n", label:"Trials (n)", val:10, step:1}, {id:"p", label:"Prob (p)", val:0.4, step:0.05}], note: "M_X(t) = (1 - p + p*e^t)^n" },
+    pois: { name: "Poisson (lambda)", params: [{id:"lam", label:"Mean Rate (lambda > 0)", val:4, step:0.5}], note: "M_X(t) = exp(lambda*(e^t - 1))" },
+    geom: { name: "Geometric (trials to 1st success)", params: [{id:"p", label:"Success Prob (p)", val:0.25, step:0.05}], note: "Support x = 1, 2, ...; E[X] = 1/p; M_X(t) = p*e^t / (1 - (1-p)e^t)" },
+    nbin: { name: "Negative Binomial (trials to r-th)", params: [{id:"r", label:"Successes (r)", val:3, step:1}, {id:"p", label:"Prob (p)", val:0.4, step:0.05}], note: "Support x = r, r+1, ...; E[X] = r/p" },
+    hyper: { name: "Hypergeometric (N, K, n)", params: [{id:"N", label:"Pop (N)", val:20, step:1}, {id:"K", label:"Successes (K)", val:7, step:1}, {id:"n", label:"Draws (n)", val:5, step:1}], note: "E[X] = n*K/N" }
+  }
+};
+
+let distMode = 'cdf';
+
+function onFamilyChange() {
+  const fam = document.getElementById('dist-family').value;
+  const sel = document.getElementById('dist-model');
+  sel.innerHTML = '';
+  for (const [k, v] of Object.entries(DIST_SPECS[fam])) {
+    const opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = v.name;
+    sel.appendChild(opt);
+  }
+  onModelChange();
+}
+
+function onModelChange() {
+  const fam = document.getElementById('dist-family').value;
+  const mod = document.getElementById('dist-model').value;
+  const spec = DIST_SPECS[fam][mod];
+  const wrap = document.getElementById('dist-params');
+  wrap.innerHTML = '';
+  spec.params.forEach(p => {
+    wrap.innerHTML += `<div><label>${p.label}</label><input type="number" step="${p.step}" id="dp-${p.id}" value="${p.val}" oninput="calcDist()"></div>`;
+  });
+  document.getElementById('dist-formula-note').textContent = spec.note;
+  renderDistQueryInputs();
+  calcDist();
+}
+
+function setDistMode(m) {
+  distMode = m;
+  document.querySelectorAll('#dist-modes .seg-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+  renderDistQueryInputs();
+  calcDist();
+}
+
+function renderDistQueryInputs() {
+  const q = document.getElementById('dist-query-inputs');
+  if (distMode === 'cdf' || distMode === 'surv') {
+    q.innerHTML = `<div><label>Target Value x</label><input type="number" step="0.1" id="dq-x" value="1.645" oninput="calcDist()"></div>`;
+  } else if (distMode === 'int') {
+    q.innerHTML = `<div><label>Lower Bound a</label><input type="number" step="0.1" id="dq-a" value="-1.96" oninput="calcDist()"></div>
+                   <div><label>Upper Bound b</label><input type="number" step="0.1" id="dq-b" value="1.96" oninput="calcDist()"></div>`;
+  } else {
+    q.innerHTML = `<div><label>Cumulative Prob p in (0, 1)</label><input type="number" step="0.01" id="dq-p" value="0.95" oninput="calcDist()"></div>`;
+  }
+}
+
+function getDistObj(fam, mod, P) {
+  if (fam === 'cont') {
+    if (mod === 'norm') {
+      const mu = P.mu, sd = Math.max(1e-9, P.sd);
+      return {
+        mean: mu, variance: sd*sd, skew: 0,
+        pdf: x => stdNormPDF((x - mu) / sd) / sd,
+        cdf: x => stdNormCDF((x - mu) / sd),
+        inv: p => mu + sd * stdNormInv(p),
+        mgf: t => Math.exp(mu * t + 0.5 * sd * sd * t * t),
+        range: [mu - 4*sd, mu + 4*sd]
+      };
+    }
+    if (mod === 'exp') {
+      const lam = Math.max(1e-9, P.lam);
+      return {
+        mean: 1/lam, variance: 1/(lam*lam), skew: 2,
+        pdf: x => x < 0 ? 0 : lam * Math.exp(-lam * x),
+        cdf: x => x <= 0 ? 0 : 1 - Math.exp(-lam * x),
+        inv: p => -Math.log(1 - p) / lam,
+        mgf: t => t < lam ? lam / (lam - t) : NaN,
+        range: [0, 5 / lam]
+      };
+    }
+    if (mod === 'gamma') {
+      const a = Math.max(1e-9, P.alpha), b = Math.max(1e-9, P.beta);
+      const mean = a / b, variance = a / (b * b);
+      return {
+        mean, variance, skew: 2 / Math.sqrt(a),
+        pdf: x => x <= 0 ? 0 : Math.exp(a * Math.log(b) - logGamma(a) + (a - 1) * Math.log(x) - b * x),
+        cdf: x => x <= 0 ? 0 : gammaincP(a, b * x),
+        inv: null,
+        mgf: t => t < b ? Math.pow(b / (b - t), a) : NaN,
+        range: [0, mean + 4 * Math.sqrt(variance)]
+      };
+    }
+    if (mod === 'unif') {
+      const a = P.a, b = Math.max(a + 1e-6, P.b);
+      return {
+        mean: (a + b)/2, variance: (b - a)**2 / 12, skew: 0,
+        pdf: x => (x >= a && x <= b) ? 1 / (b - a) : 0,
+        cdf: x => x <= a ? 0 : (x >= b ? 1 : (x - a) / (b - a)),
+        inv: p => a + p * (b - a),
+        mgf: t => Math.abs(t) < 1e-9 ? 1 : (Math.exp(t * b) - Math.exp(t * a)) / (t * (b - a)),
+        range: [a - 0.15*(b-a), b + 0.15*(b-a)]
+      };
+    }
+    if (mod === 'beta') {
+      const a = Math.max(1e-6, P.alpha), b = Math.max(1e-6, P.beta);
+      const mean = a / (a + b);
+      const variance = (a * b) / ((a + b)**2 * (a + b + 1));
+      const skew = (2 * (b - a) * Math.sqrt(a + b + 1)) / ((a + b + 2) * Math.sqrt(a * b));
+      return {
+        mean, variance, skew,
+        pdf: x => (x <= 0 || x >= 1) ? 0 : Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + (a - 1)*Math.log(x) + (b - 1)*Math.log(1 - x)),
+        cdf: x => betainc(a, b, x),
+        inv: null,
+        mgf: t => simpson(x => Math.exp(t * x) * Math.exp(logGamma(a + b) - logGamma(a) - logGamma(b) + (a - 1)*Math.log(x) + (b - 1)*Math.log(1 - x)), 1e-5, 1 - 1e-5, 400),
+        range: [0, 1]
+      };
+    }
+    if (mod === 'lnorm') {
+      const mu = P.mu, sd = Math.max(1e-6, P.sd);
+      const mean = Math.exp(mu + 0.5 * sd * sd);
+      const variance = (Math.exp(sd * sd) - 1) * Math.exp(2 * mu + sd * sd);
+      const skew = (Math.exp(sd * sd) + 2) * Math.sqrt(Math.exp(sd * sd) - 1);
+      return {
+        mean, variance, skew,
+        pdf: x => x <= 0 ? 0 : Math.exp(-0.5 * ((Math.log(x) - mu) / sd)**2) / (x * sd * Math.sqrt(2 * Math.PI)),
+        cdf: x => x <= 0 ? 0 : stdNormCDF((Math.log(x) - mu) / sd),
+        inv: p => Math.exp(mu + sd * stdNormInv(p)),
+        mgf: t => t <= 0 ? simpson(x => Math.exp(t * x) * Math.exp(-0.5 * ((Math.log(x) - mu) / sd)**2) / (x * sd * Math.sqrt(2 * Math.PI)), 1e-5, mean + 8*Math.sqrt(variance), 500) : NaN,
+        range: [0, mean + 3.5 * Math.sqrt(variance)]
+      };
+    }
+    if (mod === 'weib') {
+      const k = Math.max(1e-6, P.k), lam = Math.max(1e-6, P.lam);
+      const g1 = Math.exp(logGamma(1 + 1/k));
+      const g2 = Math.exp(logGamma(1 + 2/k));
+      const g3 = Math.exp(logGamma(1 + 3/k));
+      const mean = lam * g1;
+      const variance = lam * lam * (g2 - g1 * g1);
+      const sd = Math.sqrt(variance);
+      const skew = (g3 * lam**3 - 3 * mean * variance - mean**3) / (sd**3);
+      return {
+        mean, variance, skew,
+        pdf: x => x < 0 ? 0 : (k / lam) * Math.pow(x / lam, k - 1) * Math.exp(-Math.pow(x / lam, k)),
+        cdf: x => x <= 0 ? 0 : 1 - Math.exp(-Math.pow(x / lam, k)),
+        inv: p => lam * Math.pow(-Math.log(1 - p), 1 / k),
+        mgf: t => NaN,
+        range: [0, mean + 4 * sd]
+      };
+    }
+  } else {
+    if (mod === 'binom') {
+      const n = Math.max(1, Math.round(P.n)), p = Math.min(1, Math.max(0, P.p));
+      const pmf = k => (k < 0 || k > n || !Number.isInteger(k)) ? 0 : Math.exp(logComb(n, k) + k*Math.log(p || 1e-30) + (n - k)*Math.log(1 - p || 1e-30));
+      const cdf = x => {
+        const m = Math.floor(x);
+        if (m < 0) return 0;
+        if (m >= n) return 1;
+        let s = 0;
+        for (let i = 0; i <= m; i++) s += pmf(i);
+        return Math.min(1, s);
+      };
+      return {
+        mean: n * p, variance: n * p * (1 - p), skew: (1 - 2*p)/Math.sqrt(Math.max(1e-9, n*p*(1-p))),
+        pmf, cdf, mgf: t => Math.pow(1 - p + p * Math.exp(t), n), minX: 0, maxX: n
+      };
+    }
+    if (mod === 'pois') {
+      const lam = Math.max(1e-6, P.lam);
+      const pmf = k => (k < 0 || !Number.isInteger(k)) ? 0 : Math.exp(k * Math.log(lam) - lam - logFact(k));
+      const cdf = x => {
+        const m = Math.floor(x);
+        if (m < 0) return 0;
+        let s = 0;
+        for (let i = 0; i <= m; i++) s += pmf(i);
+        return Math.min(1, s);
+      };
+      return {
+        mean: lam, variance: lam, skew: 1 / Math.sqrt(lam),
+        pmf, cdf, mgf: t => Math.exp(lam * (Math.exp(t) - 1)), minX: 0, maxX: Math.ceil(lam + 4 * Math.sqrt(lam) + 5)
+      };
+    }
+    if (mod === 'geom') {
+      const p = Math.min(1, Math.max(1e-6, P.p));
+      const pmf = k => (k < 1 || !Number.isInteger(k)) ? 0 : p * Math.pow(1 - p, k - 1);
+      const cdf = x => x < 1 ? 0 : 1 - Math.pow(1 - p, Math.floor(x));
+      const maxX = Math.ceil(1/p + 4 * Math.sqrt((1-p)/(p*p)) + 4);
+      return {
+        mean: 1/p, variance: (1-p)/(p*p), skew: (2-p)/Math.sqrt(1-p),
+        pmf, cdf, mgf: t => (1 - p)*Math.exp(t) < 1 ? (p * Math.exp(t)) / (1 - (1 - p)*Math.exp(t)) : NaN, minX: 1, maxX
+      };
+    }
+    if (mod === 'nbin') {
+      const r = Math.max(1, Math.round(P.r)), p = Math.min(1, Math.max(1e-6, P.p));
+      const pmf = k => (k < r || !Number.isInteger(k)) ? 0 : Math.exp(logComb(k - 1, r - 1) + r*Math.log(p) + (k - r)*Math.log(1 - p));
+      const cdf = x => {
+        const m = Math.floor(x);
+        if (m < r) return 0;
+        let s = 0;
+        for (let i = r; i <= m; i++) s += pmf(i);
+        return Math.min(1, s);
+      };
+      const mean = r / p, variance = r * (1 - p) / (p * p);
+      return {
+        mean, variance, skew: (2 - p) / Math.sqrt(r * (1 - p)),
+        pmf, cdf, mgf: t => (1 - p)*Math.exp(t) < 1 ? Math.pow((p * Math.exp(t)) / (1 - (1 - p)*Math.exp(t)), r) : NaN,
+        minX: r, maxX: Math.ceil(mean + 4 * Math.sqrt(variance) + 4)
+      };
+    }
+    if (mod === 'hyper') {
+      const N = Math.max(1, Math.round(P.N));
+      const K = Math.min(N, Math.max(0, Math.round(P.K)));
+      const n = Math.min(N, Math.max(1, Math.round(P.n)));
+      const minX = Math.max(0, n + K - N), maxX = Math.min(n, K);
+      const pmf = k => (k < minX || k > maxX || !Number.isInteger(k)) ? 0 : Math.exp(logComb(K, k) + logComb(N - K, n - k) - logComb(N, n));
+      const cdf = x => {
+        const m = Math.floor(x);
+        if (m < minX) return 0;
+        if (m >= maxX) return 1;
+        let s = 0;
+        for (let i = minX; i <= m; i++) s += pmf(i);
+        return Math.min(1, s);
+      };
+      const p = K / N;
+      const mean = n * p;
+      const variance = n * p * (1 - p) * ((N - n) / Math.max(1, N - 1));
+      return { mean, variance, skew: 0, pmf, cdf, mgf: t => { let s = 0; for (let i = minX; i <= maxX; i++) s += Math.exp(t*i)*pmf(i); return s; }, minX, maxX };
+    }
+  }
+}
+
+function numericQuantile(dist, fam, targetP) {
+  if (dist.inv) return dist.inv(targetP);
+  if (fam === 'disc') {
+    for (let k = dist.minX; k <= dist.maxX + 200; k++) {
+      if (dist.cdf(k) >= targetP - 1e-12) return k;
+    }
+    return dist.maxX;
+  }
+  let lo = dist.range[0], hi = dist.range[1];
+  while (dist.cdf(hi) < targetP && hi < 1e8) hi *= 2;
+  for (let i = 0; i < 80; i++) {
+    const mid = 0.5 * (lo + hi);
+    if (dist.cdf(mid) < targetP) lo = mid; else hi = mid;
+  }
+  return 0.5 * (lo + hi);
+}
+
+function calcDist() {
+  const fam = document.getElementById('dist-family').value;
+  const mod = document.getElementById('dist-model').value;
+  const P = {};
+  DIST_SPECS[fam][mod].params.forEach(p => {
+    P[p.id] = parseFloat(document.getElementById('dp-' + p.id).value) || 0;
+  });
+  const dist = getDistObj(fam, mod, P);
+  const t = parseFloat(document.getElementById('dist-mgf-t').value) || 0;
+  const mgfVal = dist.mgf(t);
+
+  let primaryLabel = "", primaryVal = 0, shadeA = -Infinity, shadeB = Infinity;
+  if (distMode === 'cdf') {
+    const x = parseFloat(document.getElementById('dq-x').value) || 0;
+    primaryLabel = `P(X <= ${x})`;
+    primaryVal = dist.cdf(x);
+    shadeB = x;
+  } else if (distMode === 'surv') {
+    const x = parseFloat(document.getElementById('dq-x').value) || 0;
+    primaryLabel = `P(X >= ${x})`;
+    primaryVal = fam === 'cont' ? (1 - dist.cdf(x)) : (1 - dist.cdf(x - 1));
+    shadeA = x;
+  } else if (distMode === 'int') {
+    const a = parseFloat(document.getElementById('dq-a').value) || 0;
+    const b = parseFloat(document.getElementById('dq-b').value) || 0;
+    primaryLabel = `P(${a} <= X <= ${b})`;
+    primaryVal = b < a ? 0 : (fam === 'cont' ? (dist.cdf(b) - dist.cdf(a)) : (dist.cdf(b) - dist.cdf(a - 1)));
+    shadeA = a; shadeB = b;
+  } else {
+    const p = Math.min(0.999999, Math.max(0.000001, parseFloat(document.getElementById('dq-p').value) || 0.5));
+    primaryLabel = `Quantile F⁻¹(${p})`;
+    primaryVal = numericQuantile(dist, fam, p);
+    shadeB = primaryVal;
+  }
+
+  document.getElementById('dist-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">${primaryLabel}</div><div class="v">${fmt(primaryVal)}</div></div>
+    <div class="stat-box"><div class="k">MGF M_X(${t})</div><div class="v">${fmt(mgfVal)}</div></div>
+    <div class="stat-box"><div class="k">Mean E[X]</div><div class="v">${fmt(dist.mean)}</div></div>
+    <div class="stat-box"><div class="k">Variance Var(X)</div><div class="v">${fmt(dist.variance)}</div></div>
+    <div class="stat-box"><div class="k">Std Dev &sigma;</div><div class="v">${fmt(Math.sqrt(dist.variance))}</div></div>
+    <div class="stat-box"><div class="k">Skewness &gamma;₁</div><div class="v">${fmt(dist.skew)}</div></div>
+  `;
+  drawDistChart(dist, fam, shadeA, shadeB);
+}
+
+function drawDistChart(dist, fam, shadeA, shadeB) {
+  const canvas = document.getElementById('dist-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const accent = dark ? '#2dd4bf' : '#0f766e';
+  const muted = dark ? '#475569' : '#94a3b8';
+  const pad = 28;
+
+  if (fam === 'cont') {
+    const [xMin, xMax] = dist.range;
+    const N = 160;
+    const pts = [];
+    let maxY = 1e-6;
+    for (let i = 0; i <= N; i++) {
+      const x = xMin + (i / N) * (xMax - xMin);
+      const y = dist.pdf(x);
+      if (Number.isFinite(y) && y > maxY) maxY = y;
+      pts.push({x, y: Number.isFinite(y) ? y : 0});
+    }
+    const toX = x => pad + ((x - xMin) / (xMax - xMin)) * (W - 2 * pad);
+    const toY = y => H - pad - (y / (maxY * 1.12)) * (H - 2 * pad);
+
+    // Shaded area
+    ctx.beginPath();
+    let started = false;
+    pts.forEach(pt => {
+      if (pt.x >= shadeA && pt.x <= shadeB) {
+        if (!started) { ctx.moveTo(toX(pt.x), H - pad); started = true; }
+        ctx.lineTo(toX(pt.x), toY(pt.y));
+      }
+    });
+    if (started) {
+      const lastX = Math.min(xMax, Math.max(xMin, shadeB));
+      ctx.lineTo(toX(lastX), H - pad);
+      ctx.closePath();
+      ctx.fillStyle = dark ? 'rgba(45, 212, 191, 0.28)' : 'rgba(15, 118, 110, 0.22)';
+      ctx.fill();
+    }
+
+    // PDF Curve
+    ctx.beginPath();
+    pts.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.x), toY(pt.y)) : ctx.lineTo(toX(pt.x), toY(pt.y)));
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // Axis
+    ctx.strokeStyle = muted;
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad, H - pad); ctx.lineTo(W - pad, H - pad); ctx.stroke();
+  } else {
+    const minX = dist.minX, maxX = dist.maxX;
+    const count = maxX - minX + 1;
+    let maxY = 1e-6;
+    const bars = [];
+    for (let k = minX; k <= maxX; k++) {
+      const p = dist.pmf(k);
+      if (p > maxY) maxY = p;
+      bars.push({k, p});
+    }
+    const slotW = (W - 2 * pad) / Math.max(1, count);
+    const barW = Math.max(6, Math.min(34, slotW * 0.65));
+    bars.forEach((b, idx) => {
+      const cx = pad + (idx + 0.5) * slotW;
+      const bh = (b.p / (maxY * 1.15)) * (H - 2 * pad);
+      const inRange = (b.k >= shadeA && b.k <= shadeB);
+      ctx.fillStyle = inRange ? accent : muted;
+      ctx.fillRect(cx - barW/2, H - pad - bh, barW, bh);
+    });
+  }
+}
+
+// ==================== 2. BIVARIATE ====================
+let bivX = [0, 1];
+let bivY = [0, 2];
+let bivP = [[0.20, 0.30], [0.10, 0.40]];
+
+function initBivGrid() {
+  const n = parseInt(document.getElementById('biv-size').value);
+  if (n === 2) {
+    bivX = [0, 1]; bivY = [0, 2];
+    bivP = [[0.20, 0.30], [0.10, 0.40]];
+  } else {
+    bivX = [0, 1, 2]; bivY = [0, 1, 2];
+    bivP = [
+      [0.10, 0.10, 0.05],
+      [0.10, 0.20, 0.10],
+      [0.05, 0.10, 0.20]
+    ];
+  }
+  const condSel = document.getElementById('biv-cond');
+  condSel.innerHTML = '';
+  for (let j = 0; j < n; j++) condSel.innerHTML += `<option value="Y:${j}">X | Y = y_${j+1}</option>`;
+  for (let i = 0; i < n; i++) condSel.innerHTML += `<option value="X:${i}">Y | X = x_${i+1}</option>`;
+  renderBivTable();
+  calcBivar();
+}
+
+function renderBivTable() {
+  const n = bivX.length;
+  let html = `<table class="matrix"><tr><th>X \ Y</th>`;
+  for (let j = 0; j < n; j++) {
+    html += `<th><input type="number" step="0.5" value="${bivY[j]}" onchange="bivY[${j}]=parseFloat(this.value)||0; calcBivar()"></th>`;
+  }
+  html += `</tr>`;
+  for (let i = 0; i < n; i++) {
+    html += `<tr><th><input type="number" step="0.5" value="${bivX[i]}" onchange="bivX[${i}]=parseFloat(this.value)||0; calcBivar()"></th>`;
+    for (let j = 0; j < n; j++) {
+      html += `<td><input type="number" step="0.05" value="${bivP[i][j]}" oninput="bivP[${i}][${j}]=parseFloat(this.value)||0; calcBivar()"></td>`;
+    }
+    html += `</tr>`;
+  }
+  html += `</table>`;
+  document.getElementById('biv-table-wrap').innerHTML = html;
+}
+
+function normalizeBiv() {
+  let s = 0;
+  bivP.forEach(r => r.forEach(v => s += Math.max(0, v)));
+  if (s <= 0) return;
+  bivP = bivP.map(r => r.map(v => Number((Math.max(0, v) / s).toFixed(4))));
+  renderBivTable();
+  calcBivar();
+}
+
+function calcBivar() {
+  const n = bivX.length;
+  let sumP = 0;
+  const margX = new Array(n).fill(0);
+  const margY = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      const p = bivP[i][j];
+      sumP += p;
+      margX[i] += p;
+      margY[j] += p;
+    }
+  }
+  document.getElementById('biv-warn').textContent = Math.abs(sumP - 1) > 1e-4 ? `Warning: Total probability = ${sumP.toFixed(4)} (must equal 1.0000)` : "";
+
+  let ex = 0, ex2 = 0, ey = 0, ey2 = 0, exy = 0;
+  for (let i = 0; i < n; i++) {
+    ex += bivX[i] * margX[i];
+    ex2 += bivX[i]**2 * margX[i];
+  }
+  for (let j = 0; j < n; j++) {
+    ey += bivY[j] * margY[j];
+    ey2 += bivY[j]**2 * margY[j];
+  }
+  let maxIndepDiff = 0;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      exy += bivX[i] * bivY[j] * bivP[i][j];
+      maxIndepDiff = Math.max(maxIndepDiff, Math.abs(bivP[i][j] - margX[i] * margY[j]));
+    }
+  }
+  const vx = ex2 - ex*ex, vy = ey2 - ey*ey;
+  const cov = exy - ex * ey;
+  const rho = (vx > 0 && vy > 0) ? cov / Math.sqrt(vx * vy) : 0;
+
+  const condVal = document.getElementById('biv-cond').value || "Y:0";
+  const [axis, idxStr] = condVal.split(':');
+  const idx = parseInt(idxStr);
+  let cMean = 0, cMean2 = 0, cLabel = "";
+  if (axis === 'Y') {
+    const py = margY[idx] || 1e-12;
+    cLabel = `E[X | Y=${bivY[idx]}]`;
+    for (let i = 0; i < n; i++) {
+      const cp = bivP[i][idx] / py;
+      cMean += bivX[i] * cp;
+      cMean2 += bivX[i]**2 * cp;
+    }
+  } else {
+    const px = margX[idx] || 1e-12;
+    cLabel = `E[Y | X=${bivX[idx]}]`;
+    for (let j = 0; j < n; j++) {
+      const cp = bivP[idx][j] / px;
+      cMean += bivY[j] * cp;
+      cMean2 += bivY[j]**2 * cp;
+    }
+  }
+  const cVar = Math.max(0, cMean2 - cMean*cMean);
+
+  const a = parseFloat(document.getElementById('biv-a').value) || 0;
+  const b = parseFloat(document.getElementById('biv-b').value) || 0;
+  const c = parseFloat(document.getElementById('biv-c').value) || 0;
+  const ew = a * ex + b * ey + c;
+  const vw = a*a*vx + b*b*vy + 2*a*b*cov;
+
+  document.getElementById('biv-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">Cov(X, Y)</div><div class="v">${fmt(cov)}</div></div>
+    <div class="stat-box highlight"><div class="k">Correlation &rho;</div><div class="v">${fmt(rho)}</div></div>
+    <div class="stat-box"><div class="k">E[X] / Var(X)</div><div class="v">${ex.toFixed(4)} / ${vx.toFixed(4)}</div></div>
+    <div class="stat-box"><div class="k">E[Y] / Var(Y)</div><div class="v">${ey.toFixed(4)} / ${vy.toFixed(4)}</div></div>
+    <div class="stat-box"><div class="k">${cLabel}</div><div class="v">${fmt(cMean)}</div></div>
+    <div class="stat-box"><div class="k">Cond Variance</div><div class="v">${fmt(cVar)}</div></div>
+    <div class="stat-box"><div class="k">E[W] / Var(W)</div><div class="v">${ew.toFixed(4)} / ${vw.toFixed(4)}</div></div>
+    <div class="stat-box"><div class="k">Independent?</div><div class="v">${maxIndepDiff < 1e-5 ? "YES" : "NO"}</div></div>
+  `;
+}
+
+// ==================== 3. INSURANCE ====================
+function onInsSevChange() {
+  const sev = document.getElementById('ins-sev').value;
+  const w = document.getElementById('ins-sev-params');
+  if (sev === 'exp') {
+    w.innerHTML = `<div><label>Mean Loss (&theta; &gt; 0)</label><input type="number" step="50" id="ip-theta" value="1000" oninput="calcIns()"></div>`;
+  } else if (sev === 'pareto') {
+    w.innerHTML = `<div><label>Shape (&alpha; &gt; 1)</label><input type="number" step="0.2" id="ip-alpha" value="3" oninput="calcIns()"></div>
+                   <div><label>Scale (&theta; &gt; 0)</label><input type="number" step="100" id="ip-theta" value="2000" oninput="calcIns()"></div>`;
+  } else if (sev === 'unif') {
+    w.innerHTML = `<div><label>Max Loss (b &gt; 0)</label><input type="number" step="100" id="ip-b" value="3000" oninput="calcIns()"></div>`;
+  } else {
+    w.innerHTML = `<div><label>Log-Mean (&mu;)</label><input type="number" step="0.1" id="ip-mu" value="6.5" oninput="calcIns()"></div>
+                   <div><label>Log-SD (&sigma; &gt; 0)</label><input type="number" step="0.1" id="ip-sd" value="0.8" oninput="calcIns()"></div>`;
+  }
+  calcIns();
+}
+
+function calcIns() {
+  const sev = document.getElementById('ins-sev').value;
+  const dedType = document.getElementById('ins-ded-type').value;
+  const d = Math.max(0, parseFloat(document.getElementById('ins-d').value) || 0);
+  const hasU = document.getElementById('ins-has-u').checked;
+  const u = hasU ? Math.max(d, parseFloat(document.getElementById('ins-u').value) || d) : Infinity;
+  const alpha = Math.min(1, Math.max(0.01, parseFloat(document.getElementById('ins-alpha').value) || 1));
+  const r = Math.max(-0.9, parseFloat(document.getElementById('ins-r').value) || 0);
+  const scale = 1 + r;
+
+  let pdf, cdf, exBase, upperLimit;
+  if (sev === 'exp') {
+    const th = Math.max(1e-3, parseFloat(document.getElementById('ip-theta').value) || 1000) * scale;
+    pdf = x => x < 0 ? 0 : (1 / th) * Math.exp(-x / th);
+    cdf = x => x <= 0 ? 0 : 1 - Math.exp(-x / th);
+    exBase = th;
+    upperLimit = th * 18;
+  } else if (sev === 'pareto') {
+    const a = Math.max(1.01, parseFloat(document.getElementById('ip-alpha').value) || 3);
+    const th = Math.max(1, parseFloat(document.getElementById('ip-theta').value) || 2000) * scale;
+    pdf = x => x < 0 ? 0 : (a * Math.pow(th, a)) / Math.pow(x + th, a + 1);
+    cdf = x => x <= 0 ? 0 : 1 - Math.pow(th / (x + th), a);
+    exBase = th / (a - 1);
+    upperLimit = th * 40;
+  } else if (sev === 'unif') {
+    const b = Math.max(1, parseFloat(document.getElementById('ip-b').value) || 3000) * scale;
+    pdf = x => (x >= 0 && x <= b) ? 1 / b : 0;
+    cdf = x => x <= 0 ? 0 : (x >= b ? 1 : x / b);
+    exBase = b / 2;
+    upperLimit = b;
+  } else {
+    const mu = (parseFloat(document.getElementById('ip-mu').value) || 6.5) + Math.log(scale);
+    const sd = Math.max(0.05, parseFloat(document.getElementById('ip-sd').value) || 0.8);
+    pdf = x => x <= 0 ? 0 : Math.exp(-0.5 * ((Math.log(x) - mu) / sd)**2) / (x * sd * Math.sqrt(2 * Math.PI));
+    cdf = x => x <= 0 ? 0 : stdNormCDF((Math.log(x) - mu) / sd);
+    exBase = Math.exp(mu + 0.5 * sd * sd);
+    upperLimit = exBase * 15;
+  }
+
+  const payout = xr => {
+    if (xr <= d) return 0;
+    const capped = Math.min(xr, u);
+    return dedType === 'ord' ? alpha * (capped - d) : alpha * capped;
+  };
+
+  const intTop = hasU ? Math.min(u, upperLimit) : upperLimit;
+  const tailProbU = hasU ? Math.max(0, 1 - cdf(u)) : 0;
+  const maxPay = hasU ? (dedType === 'ord' ? alpha * (u - d) : alpha * u) : 0;
+
+  const eYL = (d < intTop ? simpson(x => payout(x) * pdf(x), d, intTop, 900) : 0) + maxPay * tailProbU;
+  const eYL2 = (d < intTop ? simpson(x => payout(x)**2 * pdf(x), d, intTop, 900) : 0) + (maxPay**2) * tailProbU;
+  const varYL = Math.max(0, eYL2 - eYL * eYL);
+
+  const probPay = Math.max(1e-12, 1 - cdf(d));
+  const eYP = eYL / probPay;
+  const eYP2 = eYL2 / probPay;
+  const varYP = Math.max(0, eYP2 - eYP * eYP);
+
+  const eElim = dedType === 'ord'
+    ? (d > 0 ? simpson(x => Math.min(x, d) * pdf(x), 0, Math.min(d, upperLimit), 400) + d * (1 - cdf(d)) : 0)
+    : (d > 0 ? simpson(x => x * pdf(x), 0, Math.min(d, upperLimit), 400) : 0);
+  const ler = eElim / exBase;
+
+  document.getElementById('ins-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">E[Y^L] (Per Loss)</div><div class="v">${fmt(eYL)}</div></div>
+    <div class="stat-box highlight"><div class="k">E[Y^P] (Per Payment)</div><div class="v">${fmt(eYP)}</div></div>
+    <div class="stat-box"><div class="k">Var(Y^L) / SD(Y^L)</div><div class="v">${varYL.toFixed(1)} / ${Math.sqrt(varYL).toFixed(2)}</div></div>
+    <div class="stat-box"><div class="k">Var(Y^P) / SD(Y^P)</div><div class="v">${varYP.toFixed(1)} / ${Math.sqrt(varYP).toFixed(2)}</div></div>
+    <div class="stat-box"><div class="k">P(Payment &gt; 0)</div><div class="v">${fmt(probPay)}</div></div>
+    <div class="stat-box"><div class="k">Loss Elim Ratio (LER)</div><div class="v">${fmt(ler)}</div></div>
+  `;
+  drawPayoffChart(payout, scale, d, hasU ? u : d * 2.5 + 1000);
+}
+
+function drawPayoffChart(payout, scale, d, refMax) {
+  const canvas = document.getElementById('ins-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const accent = dark ? '#2dd4bf' : '#0f766e';
+  const muted = dark ? '#475569' : '#94a3b8';
+  const pad = 28;
+  const xMax = Math.max(500, refMax * 1.25 / scale);
+  const yMax = Math.max(100, payout(xMax * scale) * 1.15);
+  const toX = x => pad + (x / xMax) * (W - 2 * pad);
+  const toY = y => H - pad - (y / yMax) * (H - 2 * pad);
+
+  ctx.strokeStyle = muted; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(pad, H - pad); ctx.lineTo(W - pad, H - pad); ctx.stroke();
+
+  ctx.beginPath();
+  for (let i = 0; i <= 150; i++) {
+    const x = (i / 150) * xMax;
+    const y = payout(x * scale);
+    i === 0 ? ctx.moveTo(toX(x), toY(y)) : ctx.lineTo(toX(x), toY(y));
+  }
+  ctx.strokeStyle = accent; ctx.lineWidth = 3; ctx.stroke();
+}
+
+// ==================== 4. ORDER STATISTICS ====================
+function onOrdModelChange() {
+  const m = document.getElementById('ord-model').value;
+  const w = document.getElementById('ord-params');
+  if (m === 'exp') w.innerHTML = `<div><label>Rate (&lambda; &gt; 0)</label><input type="number" step="0.05" id="op-lam" value="0.1" oninput="calcOrder()"></div>`;
+  else if (m === 'unif') w.innerHTML = `<div><label>Lower (a)</label><input type="number" step="1" id="op-a" value="0" oninput="calcOrder()"></div><div><label>Upper (b)</label><input type="number" step="1" id="op-b" value="10" oninput="calcOrder()"></div>`;
+  else if (m === 'norm') w.innerHTML = `<div><label>Mean (&mu;)</label><input type="number" step="1" id="op-mu" value="0" oninput="calcOrder()"></div><div><label>SD (&sigma;)</label><input type="number" step="0.5" id="op-sd" value="1" oninput="calcOrder()"></div>`;
+  else w.innerHTML = `<div><label>Shape (k)</label><input type="number" step="0.2" id="op-k" value="2" oninput="calcOrder()"></div><div><label>Scale (&lambda;)</label><input type="number" step="1" id="op-lam" value="5" oninput="calcOrder()"></div>`;
+  calcOrder();
+}
+
+function calcOrder() {
+  const m = document.getElementById('ord-model').value;
+  const n = Math.min(25, Math.max(1, Math.round(parseFloat(document.getElementById('ord-n').value) || 5)));
+  const k = Math.min(n, Math.max(1, Math.round(parseFloat(document.getElementById('ord-k').value) || 1)));
+  const xThresh = parseFloat(document.getElementById('ord-x').value) || 0;
+
+  let P = {};
+  if (m === 'exp') P = { lam: parseFloat(document.getElementById('op-lam').value) || 0.1 };
+  else if (m === 'unif') P = { a: parseFloat(document.getElementById('op-a').value) || 0, b: parseFloat(document.getElementById('op-b').value) || 10 };
+  else if (m === 'norm') P = { mu: parseFloat(document.getElementById('op-mu').value) || 0, sd: parseFloat(document.getElementById('op-sd').value) || 1 };
+  else P = { k: parseFloat(document.getElementById('op-k').value) || 2, lam: parseFloat(document.getElementById('op-lam').value) || 5 };
+
+  const dist = getDistObj('cont', m, P);
+  const coeff = Math.exp(logFact(n) - logFact(k - 1) - logFact(n - k));
+  const ordPdf = (x, rank) => {
+    const c = Math.exp(logFact(n) - logFact(rank - 1) - logFact(n - rank));
+    const F = Math.min(1, Math.max(0, dist.cdf(x)));
+    return c * Math.pow(F, rank - 1) * Math.pow(1 - F, n - rank) * dist.pdf(x);
+  };
+
+  const [lo, hi] = dist.range;
+  const eMin = simpson(x => x * ordPdf(x, 1), lo, hi, 600);
+  const eMax = simpson(x => x * ordPdf(x, n), lo, hi, 600);
+  const eK = simpson(x => x * ordPdf(x, k), lo, hi, 600);
+  const eK2 = simpson(x => x * x * ordPdf(x, k), lo, hi, 600);
+  const varK = Math.max(0, eK2 - eK * eK);
+
+  const Fx = Math.min(1, Math.max(0, dist.cdf(xThresh)));
+  let cdfK = 0;
+  for (let j = k; j <= n; j++) {
+    cdfK += Math.exp(logComb(n, j) + j * Math.log(Fx || 1e-30) + (n - j) * Math.log(1 - Fx || 1e-30));
+  }
+
+  document.getElementById('ord-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">E[X_(${k})]</div><div class="v">${fmt(eK)}</div></div>
+    <div class="stat-box highlight"><div class="k">F_X(${k})(${xThresh})</div><div class="v">${fmt(Math.min(1, cdfK))}</div></div>
+    <div class="stat-box"><div class="k">Var(X_(${k}))</div><div class="v">${fmt(varK)}</div></div>
+    <div class="stat-box"><div class="k">E[Min X_(1)]</div><div class="v">${fmt(eMin)}</div></div>
+    <div class="stat-box"><div class="k">E[Max X_(${n})]</div><div class="v">${fmt(eMax)}</div></div>
+    <div class="stat-box"><div class="k">E[Range R]</div><div class="v">${fmt(eMax - eMin)}</div></div>
+  `;
+
+  const canvas = document.getElementById('ord-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.clearRect(0, 0, W, H);
+  const dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const accent = dark ? '#2dd4bf' : '#0f766e';
+  const muted = dark ? '#64748b' : '#94a3b8';
+  const pad = 28;
+  let maxY = 1e-6;
+  const pts = [];
+  for (let i = 0; i <= 150; i++) {
+    const x = lo + (i / 150) * (hi - lo);
+    const y1 = dist.pdf(x), y2 = ordPdf(x, k);
+    maxY = Math.max(maxY, y1, y2);
+    pts.push({x, y1, y2});
+  }
+  const toX = x => pad + ((x - lo) / (hi - lo)) * (W - 2 * pad);
+  const toY = y => H - pad - (y / (maxY * 1.12)) * (H - 2 * pad);
+
+  ctx.beginPath();
+  pts.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.x), toY(pt.y1)) : ctx.lineTo(toX(pt.x), toY(pt.y1)));
+  ctx.strokeStyle = muted; ctx.lineWidth = 2; ctx.stroke();
+
+  ctx.beginPath();
+  pts.forEach((pt, i) => i === 0 ? ctx.moveTo(toX(pt.x), toY(pt.y2)) : ctx.lineTo(toX(pt.x), toY(pt.y2)));
+  ctx.strokeStyle = accent; ctx.lineWidth = 3; ctx.stroke();
+}
+
+// ==================== 5. AGGREGATE LOSS ====================
+function onAggChange() {
+  const f = document.getElementById('agg-freq').value;
+  const s = document.getElementById('agg-sev').value;
+  const fw = document.getElementById('agg-freq-params');
+  const sw = document.getElementById('agg-sev-params');
+
+  if (f === 'pois') fw.innerHTML = `<div><label>Freq Rate (&lambda;)</label><input type="number" step="0.5" id="af-lam" value="4" oninput="calcAgg()"></div>`;
+  else if (f === 'binom') fw.innerHTML = `<div><label>n</label><input type="number" step="1" id="af-n" value="10" oninput="calcAgg()"></div><div><label>p</label><input type="number" step="0.05" id="af-p" value="0.4" oninput="calcAgg()"></div>`;
+  else fw.innerHTML = `<div><label>r (successes)</label><input type="number" step="1" id="af-r" value="3" oninput="calcAgg()"></div><div><label>p</label><input type="number" step="0.05" id="af-p" value="0.5" oninput="calcAgg()"></div>`;
+
+  if (s === 'exp') sw.innerHTML = `<div><label>Sev Mean (&theta;)</label><input type="number" step="50" id="as-th" value="500" oninput="calcAgg()"></div>`;
+  else if (s === 'gamma') sw.innerHTML = `<div><label>Shape (&alpha;)</label><input type="number" step="0.5" id="as-a" value="2" oninput="calcAgg()"></div><div><label>Rate (&beta;)</label><input type="number" step="0.01" id="as-b" value="0.004" oninput="calcAgg()"></div>`;
+  else if (s === 'lnorm') sw.innerHTML = `<div><label>&mu;</label><input type="number" step="0.1" id="as-mu" value="6" oninput="calcAgg()"></div><div><label>&sigma;</label><input type="number" step="0.1" id="as-sd" value="0.6" oninput="calcAgg()"></div>`;
+  else sw.innerHTML = `<div><label>a</label><input type="number" step="50" id="as-a" value="0" oninput="calcAgg()"></div><div><label>b</label><input type="number" step="50" id="as-b" value="1000" oninput="calcAgg()"></div>`;
+  calcAgg();
+}
+
+function calcAgg() {
+  const f = document.getElementById('agg-freq').value;
+  const s = document.getElementById('agg-sev').value;
+  let en = 0, vn = 0, k3n = 0;
+  if (f === 'pois') {
+    const lam = Math.max(0.01, parseFloat(document.getElementById('af-lam').value) || 4);
+    en = lam; vn = lam; k3n = lam;
+  } else if (f === 'binom') {
+    const n = Math.max(1, parseFloat(document.getElementById('af-n').value) || 10);
+    const p = Math.min(0.999, Math.max(0.001, parseFloat(document.getElementById('af-p').value) || 0.4));
+    en = n * p; vn = n * p * (1 - p); k3n = vn * (1 - 2*p);
+  } else {
+    const r = Math.max(1, parseFloat(document.getElementById('af-r').value) || 3);
+    const p = Math.min(0.999, Math.max(0.01, parseFloat(document.getElementById('af-p').value) || 0.5));
+    const q = (1 - p) / p;
+    en = r * q; vn = r * q * (1 + q); k3n = r * q * (1 + q) * (1 + 2*q);
+  }
+
+  let ex = 0, vx = 0, mu3x = 0;
+  if (s === 'exp') {
+    const th = Math.max(1, parseFloat(document.getElementById('as-th').value) || 500);
+    ex = th; vx = th*th; mu3x = 2 * th**3;
+  } else if (s === 'gamma') {
+    const a = Math.max(0.1, parseFloat(document.getElementById('as-a').value) || 2);
+    const b = Math.max(1e-5, parseFloat(document.getElementById('as-b').value) || 0.004);
+    ex = a / b; vx = a / (b*b); mu3x = 2 * a / (b**3);
+  } else if (s === 'lnorm') {
+    const mu = parseFloat(document.getElementById('as-mu').value) || 6;
+    const sd = Math.max(0.05, parseFloat(document.getElementById('as-sd').value) || 0.6);
+    const w = Math.exp(sd*sd);
+    ex = Math.exp(mu + 0.5*sd*sd);
+    vx = (w - 1) * ex * ex;
+    mu3x = (w + 2) * Math.sqrt(w - 1) * Math.pow(vx, 1.5);
+  } else {
+    const a = parseFloat(document.getElementById('as-a').value) || 0;
+    const b = Math.max(a + 1, parseFloat(document.getElementById('as-b').value) || 1000);
+    ex = 0.5 * (a + b); vx = (b - a)**2 / 12; mu3x = 0;
+  }
+
+  const es = en * ex;
+  const vs = en * vx + vn * ex * ex;
+  const sds = Math.sqrt(vs);
+  const mu3s = en * mu3x + 3 * vn * ex * vx + k3n * (ex**3);
+  const skewS = mu3s / Math.pow(vs, 1.5);
+
+  const thresh = parseFloat(document.getElementById('agg-s').value) || 3500;
+  const pConf = Math.min(0.999, Math.max(0.5, parseFloat(document.getElementById('agg-p').value) || 0.95));
+
+  const normTail = 1 - stdNormCDF((thresh - es) / sds);
+  const normVar = es + stdNormInv(pConf) * sds;
+
+  // Translated Gamma Approximation
+  let gamTail = normTail, gamVar = normVar;
+  if (skewS > 0.05) {
+    const alphaG = 4 / (skewS * skewS);
+    const betaG = 2 / (skewS * sds);
+    const x0 = es - alphaG / betaG;
+    gamTail = thresh <= x0 ? 1 : 1 - gammaincP(alphaG, betaG * (thresh - x0));
+    const gDist = getDistObj('cont', 'gamma', { alpha: alphaG, beta: betaG });
+    gamVar = x0 + numericQuantile(gDist, 'cont', pConf);
+  }
+
+  document.getElementById('agg-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">Mean E[S]</div><div class="v">${fmt(es)}</div></div>
+    <div class="stat-box highlight"><div class="k">SD(S)</div><div class="v">${fmt(sds)}</div></div>
+    <div class="stat-box"><div class="k">Variance Var(S)</div><div class="v">${vs.toFixed(1)}</div></div>
+    <div class="stat-box"><div class="k">Skewness &gamma;_S</div><div class="v">${fmt(skewS)}</div></div>
+    <div class="stat-box"><div class="k">P(S &gt; ${thresh}) CLT</div><div class="v">${fmt(normTail)}</div></div>
+    <div class="stat-box"><div class="k">P(S &gt; ${thresh}) Gamma</div><div class="v">${fmt(gamTail)}</div></div>
+    <div class="stat-box"><div class="k">VaR_${pConf} (CLT)</div><div class="v">${fmt(normVar)}</div></div>
+    <div class="stat-box"><div class="k">VaR_${pConf} (Gamma)</div><div class="v">${fmt(gamVar)}</div></div>
+  `;
+}
+
+// ==================== 6. BAYES & EVE'S LAW ====================
+let bayesData = [
+  { name: "Preferred", prior: 0.30, lik: 0.02, mean: 500, varX: 100000 },
+  { name: "Standard", prior: 0.50, lik: 0.08, mean: 1200, varX: 400000 },
+  { name: "Substandard", prior: 0.20, lik: 0.25, mean: 3000, varX: 1500000 }
+];
+
+function renderBayesRows() {
+  const w = document.getElementById('bayes-rows');
+  w.innerHTML = '';
+  bayesData.forEach((row, i) => {
+    w.innerHTML += `
+      <div style="border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:8px;">
+        <div class="grid-3">
+          <div><label>State ${i+1}</label><input type="text" value="${row.name}" oninput="bayesData[${i}].name=this.value; calcBayes()"></div>
+          <div><label>Prior P(B)</label><input type="number" step="0.05" value="${row.prior}" oninput="bayesData[${i}].prior=parseFloat(this.value)||0; calcBayes()"></div>
+          <div><label>P(A | B)</label><input type="number" step="0.01" value="${row.lik}" oninput="bayesData[${i}].lik=parseFloat(this.value)||0; calcBayes()"></div>
+        </div>
+        <div class="grid-2" style="margin-top:6px;">
+          <div><label>E[X | B]</label><input type="number" step="50" value="${row.mean}" oninput="bayesData[${i}].mean=parseFloat(this.value)||0; calcBayes()"></div>
+          <div><label>Var(X | B)</label><input type="number" step="1000" value="${row.varX}" oninput="bayesData[${i}].varX=parseFloat(this.value)||0; calcBayes()"></div>
+        </div>
+      </div>
+    `;
+  });
+}
+
+function addBayesRow() {
+  if (bayesData.length >= 5) return;
+  bayesData.push({ name: `State ${bayesData.length + 1}`, prior: 0.10, lik: 0.10, mean: 1000, varX: 250000 });
+  renderBayesRows();
+  calcBayes();
+}
+
+function normBayesPriors() {
+  const s = bayesData.reduce((acc, r) => acc + Math.max(0, r.prior), 0);
+  if (s <= 0) return;
+  bayesData.forEach(r => r.prior = Number((Math.max(0, r.prior) / s).toFixed(4)));
+  renderBayesRows();
+  calcBayes();
+}
+
+function calcBayes() {
+  const sumPrior = bayesData.reduce((a, r) => a + r.prior, 0);
+  document.getElementById('bayes-warn').textContent = Math.abs(sumPrior - 1) > 1e-4 ? `Warning: Priors sum to ${sumPrior.toFixed(4)} (should equal 1.0000)` : "";
+
+  let pA = 0, ex = 0, eVar = 0, ex2Cond = 0;
+  bayesData.forEach(r => {
+    pA += r.prior * r.lik;
+    ex += r.prior * r.mean;
+    eVar += r.prior * r.varX;
+    ex2Cond += r.prior * (r.mean * r.mean);
+  });
+  const varE = Math.max(0, ex2Cond - ex * ex);
+  const totVar = eVar + varE;
+
+  let tbl = `<table class="matrix"><tr><th>State</th><th>Joint P(A&cap;B)</th><th>Posterior P(B|A)</th></tr>`;
+  bayesData.forEach(r => {
+    const joint = r.prior * r.lik;
+    const post = pA > 0 ? joint / pA : 0;
+    tbl += `<tr><td>${r.name}</td><td class="mono">${joint.toFixed(5)}</td><td class="mono"><b>${post.toFixed(5)}</b></td></tr>`;
+  });
+  tbl += `</table>`;
+  document.getElementById('bayes-table-wrap').innerHTML = tbl;
+
+  document.getElementById('bayes-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">Total Prob P(A)</div><div class="v">${fmt(pA)}</div></div>
+    <div class="stat-box highlight"><div class="k">Total E[X]</div><div class="v">${fmt(ex)}</div></div>
+    <div class="stat-box"><div class="k">E[Var(X | B)]</div><div class="v">${eVar.toFixed(1)}</div></div>
+    <div class="stat-box"><div class="k">Var(E[X | B])</div><div class="v">${varE.toFixed(1)}</div></div>
+    <div class="stat-box highlight"><div class="k">Total Var(X)</div><div class="v">${totVar.toFixed(1)}</div></div>
+    <div class="stat-box"><div class="k">Total SD(X)</div><div class="v">${fmt(Math.sqrt(totVar))}</div></div>
+  `;
+}
+
+// ==================== 7. REFERENCE & COMBINATORICS ====================
+const FORMULAS = [
+  { t: "Law of Total Variance (Eve's Law)", b: "Var(X) = E[Var(X | Y)] + Var(E[X | Y])" },
+  { t: "Law of Total Covariance", b: "Cov(X, Y) = E[Cov(X, Y | Z)] + Cov(E[X | Z], E[Y | Z])" },
+  { t: "Linear Combination Variance", b: "Var(aX + bY) = a^2 Var(X) + b^2 Var(Y) + 2ab Cov(X, Y)" },
+  { t: "Ordinary Deductible d (Per Loss)", b: "E[Y^L] = E[X] - E[min(X, d)] = integral_d^inf S(x) dx" },
+  { t: "Ordinary Deductible & Limit u", b: "E[Y^L] = integral_d^u S(x) dx;  E[Y^P] = E[Y^L] / S(d)" },
+  { t: "Pareto Type II Survival & Mean", b: "S(x) = (theta / (x + theta))^alpha;  E[X] = theta / (alpha - 1)" },
+  { t: "Order Statistic CDF F_X(k)(x)", b: "Sum_{j=k}^n C(n, j) [F(x)]^j [1 - F(x)]^(n - j)" },
+  { t: "Order Statistic PDF f_X(k)(x)", b: "n! / ((k-1)!(n-k)!) [F(x)]^(k-1) [1 - F(x)]^(n-k) f(x)" },
+  { t: "Exponential Minimum X_(1)", b: "X_(1) ~ Exp(sum lambda_i);  E[X_(1)] = 1 / (n * lambda)" },
+  { t: "Compound Aggregate Moments", b: "E[S] = E[N]E[X];  Var(S) = E[N]Var(X) + Var(N)(E[X])^2" },
+  { t: "Compound MGF M_S(t)", b: "M_S(t) = M_N(ln M_X(t))" },
+  { t: "Bivariate Normal Conditional", b: "Y | X=x ~ N(mu_Y + rho*(sd_Y/sd_X)*(x - mu_X), sd_Y^2*(1 - rho^2))" },
+  { t: "Transformation Jacobian (1D)", b: "f_Y(y) = f_X(g^-1(y)) * |d/dy g^-1(y)|" }
+];
+
+function renderFormulas() {
+  const q = (document.getElementById('ref-search').value || '').toLowerCase();
+  const list = document.getElementById('formula-list');
+  list.innerHTML = '';
+  FORMULAS.filter(f => f.t.toLowerCase().includes(q) || f.b.toLowerCase().includes(q)).forEach(f => {
+    list.innerHTML += `<div class="formula-item"><div class="formula-title">${f.t}</div><div class="formula-body">${f.b}</div></div>`;
+  });
+}
+
+function calcRef() {
+  const z = parseFloat(document.getElementById('ref-z').value) || 0;
+  const p = Math.min(0.999999, Math.max(0.000001, parseFloat(document.getElementById('ref-p').value) || 0.95));
+  const n = Math.max(0, Math.round(parseFloat(document.getElementById('ref-n').value) || 0));
+  const r = Math.max(0, Math.round(parseFloat(document.getElementById('ref-r').value) || 0));
+  const bk = Math.max(1, Math.round(parseFloat(document.getElementById('ref-bk').value) || 23));
+  const bn = Math.max(1, Math.round(parseFloat(document.getElementById('ref-bn').value) || 365));
+
+  const perm = r > n ? 0 : Math.exp(logFact(n) - logFact(n - r));
+  const comb = r > n ? 0 : Math.exp(logComb(n, r));
+
+  let pNoMatch = 1;
+  if (bk > bn) pNoMatch = 0;
+  else {
+    for (let i = 0; i < bk; i++) pNoMatch *= (bn - i) / bn;
+  }
+
+  document.getElementById('ref-results').innerHTML = `
+    <div class="stat-box highlight"><div class="k">&Phi;(${z})</div><div class="v">${fmt(stdNormCDF(z))}</div></div>
+    <div class="stat-box highlight"><div class="k">Inverse z_${p}</div><div class="v">${fmt(stdNormInv(p))}</div></div>
+    <div class="stat-box"><div class="k">Perm P(${n}, ${r})</div><div class="v">${perm > 1e12 ? perm.toExponential(4) : Math.round(perm)}</div></div>
+    <div class="stat-box"><div class="k">Comb C(${n}, ${r})</div><div class="v">${comb > 1e12 ? comb.toExponential(4) : Math.round(comb)}</div></div>
+    <div class="stat-box"><div class="k">Birthday Match P</div><div class="v">${fmt(1 - pNoMatch)}</div></div>
+    <div class="stat-box"><div class="k">2-Tail P(|Z| &gt; |${z}|)</div><div class="v">${fmt(2 * (1 - stdNormCDF(Math.abs(z))))}</div></div>
+  `;
+}
+
+// ==================== INITIALIZATION ====================
+window.addEventListener('DOMContentLoaded', () => {
+  onFamilyChange();
+  initBivGrid();
+  onInsSevChange();
+  onOrdModelChange();
+  onAggChange();
+  renderBayesRows();
+  calcBayes();
+  renderFormulas();
+  calcRef();
+});
+</script>
+</body>
+</html>
